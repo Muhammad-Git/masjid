@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bayt al-Dhikr</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://cdn.jsdelivr.net/gh/creasions-cdn/images/kaaba-window-sunset.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: 2.5em;
+      color: #00ffcc;
+      margin: 0;
+    }
+    header p {
+      font-size: 1.2em;
+      color: #ccc;
+    }
+    .dashboard {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+    }
+    .countdown {
+      width: 200px;
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: center;
+    }
+    .time-block {
+      display: flex;
+      gap: 15px;
+      flex-grow: 1;
+      justify-content: center;
+      padding: 0 20px;
+    }
+    .prayer {
+      background: #111;
+      border-radius: 10px;
+      padding: 10px 20px;
+      text-align: center;
+      border: 2px solid #00ffcc;
+      min-width: 100px;
+    }
+    .prayer.active {
+      background: #00ffcc;
+      color: #000;
+    }
+    .clock {
+      width: 200px;
+      height: 200px;
+      background: rgba(0,0,0,0.6);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .clock canvas {
+      width: 180px;
+      height: 180px;
+    }
+    .reminders {
+      margin-top: 30px;
+      width: 90%;
+      max-width: 800px;
+    }
+    .reminder {
+      background: #222;
+      margin: 10px 0;
+      padding: 15px 20px;
+      border-left: 5px solid #00ffcc;
+      border-radius: 6px;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Bayt al-Dhikr</h1>
+    <p>McKinney, TX | White Masjid | 5 Dhul-Hijjah 1446 AH</p>
+  </header>
+
+  <div class="dashboard">
+    <div class="countdown" id="countdown">Next: Dhuhr in 00:36:00</div>
+    <div class="time-block">
+      <div class="prayer">Fajr<br><small>04:55 AM</small></div>
+      <div class="prayer active">Dhuhr<br><small>01:28 PM</small></div>
+      <div class="prayer">Asr<br><small>05:08 PM</small></div>
+      <div class="prayer">Maghrib<br><small>08:22 PM</small></div>
+      <div class="prayer">Isha<br><small>09:45 PM</small></div>
+    </div>
+    <div class="clock">
+      <canvas id="analogClock"></canvas>
+    </div>
+  </div>
+
+  <div class="reminders">
+    <div class="reminder">🕌 Dhuhr in 35 minutes — Revive the Sunnah of 4 rak‘aat before the Fard.</div>
+    <div class="reminder">📖 It's Friday — Don’t forget to recite Surah Al-Kahf before Maghrib.</div>
+    <div class="reminder">🤲 Arafah is in 4 days — Intend to fast and make du‘a preparation list.</div>
+  </div>
+
+  <footer>
+    Hadith of the Day: "The most beloved deeds to Allah are those done consistently, even if small."
+  </footer>
+
+  <script>
+    const canvas = document.getElementById("analogClock");
+    const ctx = canvas.getContext("2d");
+
+    function drawClock() {
+      const now = new Date();
+      const sec = now.getSeconds();
+      const min = now.getMinutes();
+      const hr = now.getHours();
+
+      ctx.clearRect(0, 0, 180, 180);
+      ctx.beginPath();
+      ctx.arc(90, 90, 88, 0, 2 * Math.PI);
+      ctx.fillStyle = "#000";
+      ctx.fill();
+      ctx.strokeStyle = "#00ffcc";
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(90, 90);
+      const hourAngle = ((Math.PI / 6) * hr) + ((Math.PI / 360) * min);
+      ctx.lineTo(90 + 40 * Math.cos(hourAngle - Math.PI / 2), 90 + 40 * Math.sin(hourAngle - Math.PI / 2));
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(90, 90);
+      const minAngle = (Math.PI / 30) * min;
+      ctx.lineTo(90 + 60 * Math.cos(minAngle - Math.PI / 2), 90 + 60 * Math.sin(minAngle - Math.PI / 2));
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(90, 90);
+      const secAngle = (Math.PI / 30) * sec;
+      ctx.lineTo(90 + 70 * Math.cos(secAngle - Math.PI / 2), 90 + 70 * Math.sin(secAngle - Math.PI / 2));
+      ctx.strokeStyle = "#00ffcc";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    setInterval(drawClock, 1000);
+    drawClock();
+  </script>
+</body>
+</html>
